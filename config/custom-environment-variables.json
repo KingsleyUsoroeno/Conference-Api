@@ -1,0 +1,6 @@
+{
+    "database": {
+        "password":"app_db_password",
+        "username":"db_user_name"
+    }
+}
