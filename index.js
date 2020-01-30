@@ -18,7 +18,12 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/speakers', speakers);
-app.use('/attendee', attendants)
+app.use('/attendee', attendants);
+
+// for test purpose
+app.get('/', (req, res) => {
+    res.status(200).send('Welcome to my root route');
+})
 
 // connect to our database with config data
 const DB_URL = process.env.DB_URL;
