@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
 // connect to our database with config data
 const DB_URL = process.env.DB_URL;
 
-mongoose.connect(`mongodb+srv://${DB_URL}?retryWrites=true&w=majority`,(err, client) =>{
+mongoose.connect(DB_URL,(err, client) =>{
     if(err){
        return console.log(`error connecting to db ${err}`)
     }else{
