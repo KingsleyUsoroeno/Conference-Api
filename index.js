@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
 // connect to our database with config data
 const DB_URL = process.env.DB_URL;
 
-mongoose.connect(DB_URL,{useUnifiedTopology: true, useNewUrlParser: true},(err, client) =>{
+mongoose.connect("mongodb+srv://kingsleyTech:momsthebest@cluster0-jzcgx.mongodb.net/test?retryWrites=true&w=majority",{useUnifiedTopology: true, useNewUrlParser: true},(err, client) =>{
     if(err){
        return console.log(`error connecting to db ${err}`)
     }else{
