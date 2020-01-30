@@ -11,7 +11,6 @@ router.get('/all', async (req, res) =>{
     try{
         const allSpeakers = await Speaker.find({});
         console.log(allSpeakers);
-        
         res.status(200).json({data: allSpeakers});
         
     }catch(err){
@@ -27,7 +26,7 @@ router.get('/:speakerId', async (req, res) => {
             return res.status(404).json({message: 'Id does not exist'})
         }
         const speaker = await Speaker.findById(speakerId);
-        res.json(speaker);
+        res.status(200).json(speaker);
     }catch(err){
         res.status(404).send(err);
     }
@@ -80,9 +79,9 @@ router.post('/add', async (req, res) => {
 router.put('/:speakerId', async (req, res) =>{
     const speakerId = req.params.speakerId;
     console.log(req.body.name);
-    
+
     try{
-        await Speaker.findOneAndUpdate({_id:speakerId}, {name:req.body.name}, (err, result) =>{
+        await Speaker.findOneAndUpdate({_id:speakerId}, {name:req.body.name, topic: req.body.topic, email: req.body.email}, (err, result) =>{
             if(err) return res.status(500).send(err)
             res.status(200).json(result)
             console.log(`updated Speaker Id is ${result}`);
@@ -94,13 +93,13 @@ router.put('/:speakerId', async (req, res) =>{
 
 // Delete a speaker
 router.delete('/:speakerId', async (req, res) =>{
-    const speakerId = req.params.speakerId;
-    try{
-        const removedPost = await Speaker.deleteOne({_id: speakerId});
-        res.json({message:'speaker deleted successfully', removedPost});
-    }catch(err){
-        res.status(404).json({message: err})
-    }
+        const speakerId = req.params.speakerId;
+        try{
+            const removedPost = await Speaker.deleteOne({_id: speakerId});
+            res.json({message:'speaker deleted successfully', removedPost});
+        }catch(err){
+            res.status(404).json({message: err})
+        }
 });
 
 module.exports = router;

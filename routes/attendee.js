@@ -8,7 +8,7 @@ const Attendant = require('../models/attendants');
 router.get('/all', async (req, res) =>{
     try{
         const allAttendants = await Attendant.find();
-        res.json({data: allAttendants});
+        res.status(200).json({data: allAttendants});
         
     }catch(err){
         res.status(500).send(err);
@@ -23,15 +23,26 @@ router.get('/:attendantId', async (req, res) => {
             return res.status(404).json({message: 'Id does not exist'})
         }
         const attendant = await Attendant.findById(attendantId);
-        res.json(attendant);
+        res.status(200).json(attendant);
     }catch(err){
         res.status(404).send(err);
     }
 });
 
 // Add an attendees to the Db
-router.put('/', (req, res) => {
+router.put('/:attendeeId', (req, res) => {
+    const attendantId = req.params.attendeeId;
+    console.log(req.body.name);
 
+    try{
+        await Attendant.findOneAndUpdate({_id:attendantId}, {firstName:req.body.firstName, lastName: req.body.lastName, email: req.body.email}, (err, result) =>{
+            if(err) return res.status(500).send(err)
+            res.status(200).json(result)
+            console.log(`updated Attendant is ${result}`);
+        });
+    }catch(err){
+        res.status(404).send(err);
+    } 
 });
 
 // Add an attendant to the database
@@ -59,11 +70,6 @@ router.post('/', async (req, res) =>{
             lastName: req.body.topic,
             email:req.body.email,
             password: hash,
-            name:'speaker',
-            topic:'topic',
-            email:'speaker@gmail.com',
-            password:'12345',
-            duration:'12345'
           });
 
           attendant.save(function(err, result){
@@ -82,7 +88,13 @@ router.post('/', async (req, res) =>{
 
 // Delete an attendees
 router.delete('/:id', (req, res) =>{
-
+    const id = req.params.id;
+    try{
+        const removedAttendant = await Attendant.deleteOne({_id: id});
+        res.json({message:'speaker deleted successfully', removedAttendant});
+    }catch(err){
+        res.status(404).json({message: err})
+    } 
 });
 
 module.exports = router;

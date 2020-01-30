@@ -1,4 +1,5 @@
 // import our dependencies
+require('dotenv').config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
@@ -21,8 +22,8 @@ app.use('/speakers', speakers);
 app.use('/attendee', attendants)
 
 // connect to our database with config data
-const dbUserName = config.get('database.username');
-const dbPassword = config.get('database.password');
+const dbUserName = process.env.DB_USERNAME;
+const dbPassword = process.env.DB_PASSWORD;
 
 const url =  `mongodb+srv://${dbUserName}:${dbPassword}@cluster0-jzcgx.mongodb.net/test?retryWrites=true&w=majority`
 
