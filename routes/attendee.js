@@ -30,7 +30,7 @@ router.get('/:attendantId', async (req, res) => {
 });
 
 // Add an attendees to the Db
-router.put('/:attendeeId', (req, res) => {
+router.put('/:attendeeId', async (req, res) => {
     const attendantId = req.params.attendeeId;
     console.log(req.body.name);
 
@@ -64,12 +64,14 @@ router.post('/', async (req, res) =>{
         try{
             if(err) return res.json({message: err})
             console.log(hash);
+
+            const {firstName, lastName, email, password} = req.body;
             
           const attendant = new Attendant ({
-            firstName: req.body.name,
-            lastName: req.body.topic,
-            email:req.body.email,
-            password: hash,
+            firstName: firstName,
+            lastName: lastName,
+            email:email,
+            password: password,
           });
 
           attendant.save(function(err, result){
