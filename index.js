@@ -17,8 +17,8 @@ const app = express();
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use('/speakers/', speakers);
-app.use('/attendee/', attendants)
+app.use('/speakers', speakers);
+app.use('/attendee', attendants)
 
 // connect to our database with config data
 const dbUserName = config.get('database.username');

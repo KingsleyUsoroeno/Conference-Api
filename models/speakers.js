@@ -11,7 +11,8 @@ const speakerSchema = mongoose.Schema({
     },
     email:{
         type: String,
-        require: true
+        require: true, 
+        unique: true
     },
 
     password:{
@@ -22,8 +23,11 @@ const speakerSchema = mongoose.Schema({
     duration:{
         type: Number,
         require: true
+    },
+    attendee:{
+        type: Array
     }
 });
 
-const Speaker = mongoose.model('speaker', speakerSchema);
+const Speaker = mongoose.model('speaker', speakerSchema, 'speaker');
 module.exports = Speaker;

@@ -3,13 +3,16 @@ const router = express.Router();
 const Speaker = require('../models/speakers');
 const {validateSpeaker} = require('../validation/validation');
 const bcrypt = require("bcrypt-nodejs");
+const attendee = require('../models/attendants');
 
 // Get All Speakers from the Database
 // /speakers/all
 router.get('/all', async (req, res) =>{
     try{
-        const allSpeakers = await Speaker.find();
-        res.json({data: allSpeakers});
+        const allSpeakers = await Speaker.find({});
+        console.log(allSpeakers);
+        
+        res.status(200).json({data: allSpeakers});
         
     }catch(err){
         res.status(500).send(err);
@@ -43,7 +46,7 @@ router.post('/add', async (req, res) => {
     console.log(speaker);
     
     if(speaker){
-        return res.status(400).json({message: 'user already exists'})
+        return res.status(400).json({message: 'Speaker already registered'})
     }
     // inputs are okay bycrpt the users password
     // bycpyt the users password
@@ -79,9 +82,11 @@ router.put('/:speakerId', async (req, res) =>{
     console.log(req.body.name);
     
     try{
-        const speaker = await Speaker.updateOne({_id:speakerId}, {$set: {name:req.body.name}});
-        const updatedSpeaker = await Speaker.findById(speakerId);
-        res.status(200).json({message:'Speaker updated successfully', updatedSpeaker});
+        await Speaker.findOneAndUpdate({_id:speakerId}, {name:req.body.name}, (err, result) =>{
+            if(err) return res.status(500).send(err)
+            res.status(200).json(result)
+            console.log(`updated Speaker Id is ${result}`);
+        });
     }catch(err){
         res.status(404).send(err);
     } 
