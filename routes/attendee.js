@@ -89,7 +89,7 @@ router.post('/', async (req, res) =>{
 });
 
 // Delete an attendees
-router.delete('/:id', (req, res) =>{
+router.delete('/:id', async (req, res) =>{
     const id = req.params.id;
     try{
         const removedAttendant = await Attendant.deleteOne({_id: id});
