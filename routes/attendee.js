@@ -34,10 +34,12 @@ router.put('/:attendeeId', async (req, res) => {
     const attendantId = req.params.attendeeId;
     console.log(req.body.name);
 
+    const {firstName, lastName, email} = req.body;
+
     try{
-        await Attendant.findOneAndUpdate({_id:attendantId}, {firstName:req.body.firstName, lastName: req.body.lastName, email: req.body.email}, (err, result) =>{
+        await Attendant.findOneAndUpdate({_id:attendantId}, {firstName:firstName, lastName: lastName, email: email}, (err, result) =>{
             if(err) return res.status(500).send(err)
-            res.status(200).json(result)
+            res.status(200).json({status:'Attendant updated successfully', data: result})
             console.log(`updated Attendant is ${result}`);
         });
     }catch(err){
@@ -65,7 +67,7 @@ router.post('/', async (req, res) =>{
             if(err) return res.json({message: err})
             console.log(hash);
 
-            const {firstName, lastName, email, password} = req.body;
+         const {firstName, lastName, email, password} = req.body;
             
           const attendant = new Attendant ({
             firstName: firstName,

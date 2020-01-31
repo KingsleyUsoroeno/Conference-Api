@@ -22,7 +22,7 @@ app.use('/attendee', attendants);
 
 // for test purpose
 app.get('/', (req, res) => {
-    res.status(200).send('Welcome to my root route');
+    res.status(200).send('Welcome to my Default Page');
 })
 
 // connect to our database with config data

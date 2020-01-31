@@ -54,18 +54,20 @@ router.post('/add', async (req, res) => {
         try{
             if(err) return res.json({message: err})
             console.log(hash);
+
+         const {name, topic, email, duration } = req.body;  
             
           const speaker = new Speaker ({
-                name: req.body.name,
-                topic: req.body.topic,
-                email:req.body.email,
+                name: name,
+                topic: topic,
+                email:email,
                 password: hash,
-                duration:req.body.duration
+                duration:duration
           });
 
           speaker.save(function(err, result){
             if(err) return res.status(500).send(err);
-            res.status(201).json({data: result});
+            res.status(201).json({message:'Speaker registered successfully', data: result});
           });
           
         }catch(err){
@@ -80,8 +82,10 @@ router.put('/:speakerId', async (req, res) =>{
     const speakerId = req.params.speakerId;
     console.log(req.body.name);
 
+    const {name, topic, email, duration} = req.body
+
     try{
-        await Speaker.findOneAndUpdate({_id:speakerId}, {name:req.body.name, topic: req.body.topic, email: req.body.email}, (err, result) =>{
+        await Speaker.findOneAndUpdate({_id:speakerId}, {name:name, topic: topic, email: email, duration: duration}, (err, result) =>{
             if(err) return res.status(500).send(err)
             res.status(200).json(result)
             console.log(`updated Speaker Id is ${result}`);
